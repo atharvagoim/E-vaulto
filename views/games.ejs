@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Game Vault | E-Vaulto</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --red: #e10600;
+  --dark-red: #7a0300;
+  --black: #050505;
+  --glass: rgba(0,0,0,0.55);
+  --border: rgba(255,255,255,0.08);
+  --white-muted: #cfcfcf;
+}
+
+/* RESET */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  background:
+    linear-gradient(rgba(0,0,0,.75), rgba(0,0,0,.9)),
+    url("/images/acs.jpeg") center/cover no-repeat fixed;
+  color: white;
+  min-height: 100vh;
+  animation: fadeIn 1.2s ease;
+}
+
+/* FADE IN */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ================= HEADER ================= */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 22px 32px;
+  backdrop-filter: blur(12px);
+  background: linear-gradient(180deg, rgba(0,0,0,.7), rgba(0,0,0,.2));
+  border-bottom: 1px solid var(--border);
+}
+
+.back-btn {
+  background: transparent;
+  border: 1px solid var(--red);
+  color: var(--red);
+  padding: 8px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.4s ease;
+}
+
+.back-btn:hover {
+  background: var(--red);
+  color: black;
+  box-shadow: 0 0 18px rgba(225,6,0,0.5);
+}
+
+/* PLATFORM BUTTONS */
+.platforms {
+  margin-left: auto;
+  display: flex;
+  gap: 14px;
+}
+
+/* BASE PLATFORM BUTTON */
+/* BASE PLATFORM BUTTON */
+.platforms button {
+  background: rgba(0,0,0,0.6);
+  border: 1px solid var(--border);
+  color: rgb(255, 0, 0);
+  padding: 10px 22px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all .35s ease;
+  font-weight: 500;
+  border-color: red;
+}
+
+/* ================= STEAM + PLAYSTATION (BLUE / WHITE) ================= */
+.btn-steam,
+.btn-playstation {
+  border-color: #1b6cff;
+  color: #ffffff;
+}
+
+.btn-steam:hover,
+.btn-playstation:hover {
+  background: linear-gradient(135deg, #1b6cff, #0a2a66);
+  border-color: #1b6cff;
+  box-shadow: 0 0 20px rgba(27,108,255,0.6);
+  color: #ffffff;
+}
+
+/* ================= EPIC (NEUTRAL PREMIUM) ================= */
+.btn-epic {
+  border-color: white;
+  color: white;
+}
+
+.btn-epic:hover {
+  background: white;
+  color: black;
+  border-color: #ffffff;
+  box-shadow: 0 0 20px rgba(255,255,255,0.4);
+}
+
+/* ================= XBOX (GREEN / BLACK) ================= */
+.btn-xbox {
+  border-color: #00742a;
+  color: #006927;
+}
+
+.btn-xbox:hover {
+  background: linear-gradient(135deg, #042711, #064e1f);
+  color: rgb(255, 255, 255);
+  box-shadow: 0 0 10px rgba(22,163,74,0.6);
+  border-color: #042711;
+}
+
+/* ================= FREE GAMES (RED / BLACK) ================= */
+.btn-free {
+  border-color: #e10600;
+  color: #e10600;
+}
+
+.btn-free:hover {
+  background: linear-gradient(135deg, #e10600, #550000);
+  color: rgb(255, 255, 255);
+  box-shadow: 0 0 22px rgba(225,6,0,0.7);
+}
+
+
+
+/* ================= ADD GAME ================= */
+.add-game {
+  margin: 40px auto;
+  max-width: 900px;
+  padding: 34px;
+  background: var(--glass);
+  border-radius: 26px;
+  border: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+  animation: slideUp 0.9s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.add-game h2 {
+  margin-bottom: 28px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: white;
+}
+
+.add-game form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.add-game input,
+.add-game select {
+  background: rgba(0,0,0,0.65);
+  border: 1px solid var(--border);
+  padding: 16px 18px;
+  border-radius: 16px;
+  color: white;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.add-game input:focus,
+.add-game select:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 10px rgba(225,6,0,0.35);
+}
+
+.add-game button {
+  grid-column: span 2;
+  padding: 18px;
+  background: linear-gradient(135deg, var(--red), var(--dark-red));
+  border: none;
+  border-radius: 40px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.4s ease;
+}
+
+.add-game button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 2px rgb(172, 0, 0) ;
+}
+
+/* ================= GAME CARDS ================= */
+.cards {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 30px;
+}
+
+.card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  padding: 28px;
+  backdrop-filter: blur(16px);
+  transition: all 0.45s ease;
+  animation: cardIn 0.8s ease forwards;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  border-color: var(--red);
+  box-shadow: 0 20px 50px rgba(0,0,0,.6);
+}
+
+.card h3 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+
+.card .launcher {
+  font-size: 13px;
+  color: var(--white-muted);
+  margin-bottom: 18px;
+}
+
+.row {
+  margin: 10px 0;
+  font-size: 15px;
+}
+
+.label {
+  color: var(--white-muted);
+}
+
+.eye-btn {
+  margin-left: 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--red);
+  border-radius: 8px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.eye-btn:hover {
+  border-color: var(--red);
+}
+
+/* DELETE */
+.delete-btn {
+  margin-top: 20px;
+  background: transparent;
+  border: 1px solid var(--red);
+  color: var(--red);
+  padding: 8px 16px;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.delete-btn:hover {
+  background: var(--red);
+  color: black;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <button class="back-btn" onclick="history.back()">← Back</button>
+
+  <div class="platforms">
+  <a href="https://store.steampowered.com/" target="_blank">
+    <button class="btn-steam">Steam</button>
+  </a>
+
+  <a href="https://store.epicgames.com/en-US" target="_blank">
+    <button class="btn-epic">Epic Games</button>
+  </a>
+
+  <a href="https://store.playstation.com/en-in/pages/latest" target="_blank">
+    <button class="btn-playstation">PlayStation</button>
+  </a>
+
+  <a href="https://www.xbox.com/en-US/microsoft-store" target="_blank">
+    <button class="btn-xbox">Xbox</button>
+  </a>
+
+  <a href="/free-games">
+    <button class="btn-free">Free Games</button>
+  </a>
+</div>
+
+</div>
+
+<!-- ADD GAME -->
+<div class="add-game">
+  <h2>Add Game to Vault</h2>
+
+  <form action="/games/add" method="POST">
+    <input type="text" name="gameName" placeholder="Game Name" required>
+    <select name="launcher" required>
+      <option value="">Select Platform</option>
+      <option>Steam</option>
+      <option>Epic Games</option>
+      <option>PlayStation Store</option>
+      <option>Xbox</option>
+    </select>
+
+    <input type="text" name="gameId" placeholder="Launcher Login (Email or Username)" required>
+    <input type="password" name="gamePassword" placeholder="Game Password" required>
+
+    <button>Add Game</button>
+  </form>
+</div>
+
+<!-- GAME CARDS -->
+<div class="cards">
+  <% games.forEach(game => { %>
+    <div class="card">
+      <h3><%= game.game_name %></h3>
+      <div class="launcher"><%= game.launcher %></div>
+
+      <div class="row">
+        <span class="label">Login:</span>
+        <span><%= game.game_id %></span>
+      </div>
+
+      <div class="row">
+        <span class="label">Password:</span>
+        <span class="password" data-password="<%= game.game_password %>">••••••••</span>
+        <button class="eye-btn" type="button" onclick="togglePassword(this)">👁</button>
+      </div>
+
+      <form action="/games/delete/<%= game.id %>" method="POST">
+        <button class="delete-btn">Delete</button>
+      </form>
+    </div>
+  <% }) %>
+</div>
+
+<script>
+function togglePassword(btn) {
+  const pwd = btn.previousElementSibling;
+  if (pwd.textContent.includes("•")) {
+    pwd.textContent = pwd.dataset.password;
+    btn.textContent = "👁";
+  } else {
+    pwd.textContent = "••••••••";
+    btn.textContent = "👁";
+  }
+}
+</script>
+
+</body>
+</html>

@@ -369,7 +369,64 @@ app.get("/passwords/delete/:id", requireLogin, async (req, res) => {
 
 // Vault sections
 
-app.get("/games", requireLogin, (req, res) => res.send("🎮 Games"));
+// =======================
+// GAMES VAULT
+// =======================
+
+app.get("/games", requireLogin, async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+
+    const [games] = await pool.query(
+      "SELECT * FROM games WHERE user_id = ? ORDER BY created_at DESC",
+      [userId]
+    );
+
+    res.render("games", { games });
+  } catch (err) {
+    console.error(err);
+    res.redirect("/");
+  }
+});
+
+app.post("/games/add", requireLogin, async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+    const { gameName, launcher, gameId, gamePassword } = req.body;
+
+    await pool.query(
+      `INSERT INTO games 
+       (user_id, game_name, launcher, game_id, game_password)
+       VALUES (?, ?, ?, ?, ?)`,
+      [userId, gameName, launcher, gameId, gamePassword]
+    );
+
+    res.redirect("/games");
+  } catch (err) {
+    console.error(err);
+    res.redirect("/games");
+  }
+});
+
+app.post("/games/delete/:id", requireLogin, async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+    const gameId = req.params.id;
+
+    await pool.query(
+      "DELETE FROM games WHERE id = ? AND user_id = ?",
+      [gameId, userId]
+    );
+
+    res.redirect("/games");
+  } catch (err) {
+    console.error(err);
+    res.redirect("/games");
+  }
+});
+
+
+
 app.get("/expenses", requireLogin, (req, res) => res.send("💸 Expenses"));
 app.get("/notes", requireLogin, (req, res) => res.send("📝 Secure Notes"));
 
