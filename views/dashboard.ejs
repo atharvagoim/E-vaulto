@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard | E-Vaulto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1a1a1a, #050505);
+      color: #e5e7eb;
+      overflow-x: hidden;
+    }
+
+    /* ================= HEADER ================= */
+    .header {
+      height: 72px;
+      padding: 0 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1f2933;
+      background: rgba(10,10,10,0.7);
+      backdrop-filter: blur(10px);
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 600;
+      animation: fadeDown 0.6s ease forwards;
+    }
+
+    /* HAMBURGER */
+    .menu-btn {
+      width: 40px;
+      height: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .menu-btn span {
+  height: 2px;              /* ⬅ thinner, not smaller */
+  width: 100%;              /* ⬅ full length preserved */
+  background: #22c55e;
+  border-radius: 10px;
+
+  /* subtle visual reduction */
+  opacity: 0.8;
+
+  transition: all 0.25s ease;
+}
+
+
+
+    /* ================= MAIN CONTENT ================= */
+    .content {
+      padding: 50px 32px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .section-title {
+      font-size: 22px;
+      margin-bottom: 30px;
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    /* ================= VAULT CARDS ================= */
+    .vault-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .vault-card {
+      background: linear-gradient(145deg, #0f0f0f, #070707);
+      border: 1px solid #1f2933;
+      border-radius: 18px;
+      padding: 28px 34px;
+      text-decoration: none;
+      color: #fff;
+
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      opacity: 0;
+      transform: translateY(20px);
+      animation: cardIn 0.6s ease forwards;
+
+      transition: 
+        transform 0.35s ease,
+        box-shadow 0.35s ease,
+        border 0.35s ease;
+    }
+
+    .vault-card:nth-child(1){animation-delay:.1s}
+    .vault-card:nth-child(2){animation-delay:.2s}
+    .vault-card:nth-child(3){animation-delay:.3s}
+    .vault-card:nth-child(4){animation-delay:.4s}
+
+    .vault-card h3 {
+      font-size: 18px;
+      color: #22c55e;
+      font-weight: 600;
+    }
+
+    .vault-card p {
+      font-size: 14px;
+      color: #9ca3af;
+    }
+
+    .vault-card:hover {
+      transform: translateY(-8px) scale(1.01);
+      border-color: #22c55e;
+      box-shadow:
+        0 0 0 1px rgba(34,197,94,.25),
+        0 20px 50px rgba(34,197,94,.2);
+    }
+
+    /* ================= SIDEBAR ================= */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 280px;
+      height: 100vh;
+      background: #0b0b0b;
+      border-left: 1px solid #1f2933;
+      padding: 28px;
+
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+      z-index: 1000;
+    }
+
+    .sidebar.active {
+      transform: translateX(0);
+    }
+
+    .sidebar h3 {
+      color: #22c55e;
+      margin-bottom: 25px;
+      font-size: 18px;
+    }
+
+    .sidebar a {
+      display: block;
+      margin: 14px 0;
+      color: #e5e7eb;
+      text-decoration: none;
+      font-size: 15px;
+      transition: color .2s;
+    }
+
+    .sidebar a:hover {
+      color: #000000;
+    }
+
+    .danger {
+      margin-top: 30px;
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: 2px solid #ef4444;
+      color: #ef4444;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all .3s ease;
+    }
+
+    .danger:hover {
+      background: #ef4444;
+      color: #000;
+      box-shadow: 0 0 20px rgba(239,68,68,.5);
+    }
+
+    /* ================= OVERLAY ================= */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(6px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s ease;
+      z-index: 999;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ================= ANIMATIONS ================= */
+    @keyframes fadeDown {
+      from {opacity:0; transform:translateY(-10px)}
+      to {opacity:1; transform:translateY(0)}
+    }
+
+    @keyframes fadeUp {
+      from {opacity:0; transform:translateY(10px)}
+      to {opacity:1; transform:translateY(0)}
+    }
+
+    @keyframes cardIn {
+      to {opacity:1; transform:translateY(0)}
+    }
+
+    .settings-btn {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  margin-top: 12px;
+
+  border-radius: 14px;
+  text-align: center;
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  background: transparent;
+  transition: all 0.25s ease;
+}
+
+.white-btn {
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.6);
+}
+
+.white-btn:hover {
+    background: #ffffff;
+      color: #000;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+/* =========================
+   DASHBOARD FOOTER
+========================= */
+.dashboard-footer {
+  margin-top: 60px;
+  padding: 28px 20px;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.dashboard-note {
+  font-size: 13px;
+  color: #9a9a9a;
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+
+/* =========================
+   CONTACT INFO
+========================= */
+.dashboard-contact p {
+  margin: 6px 0;
+  font-size: 13px;
+  color: #b5b5b5;
+}
+
+.dashboard-contact span {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* =========================
+   SUPPORT HOURS
+========================= */
+.support-hours span {
+  color: #22c55e; /* matches your vault green */
+  font-weight: 600;
+}
+
+/* =========================
+   PASSWORD MANAGER CARD
+   Blue / Black / White Theme
+========================= */
+
+
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Welcome, <%= user.first_name %> </h1>
+
+    <div class="menu-btn" onclick="openSidebar()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+    <h3 class="section-title">Your Vault</h3>
+
+    <div class="vault-grid">
+      <a href="/passwords" class="vault-card">
+        <h3> Password Manager</h3>
+        <p>Store and manage all passwords securely</p>
+      </a>
+
+      <a href="/games" class="vault-card">
+        <h3> Game IDs</h3>
+        <p>All your gaming accounts in one vault</p>
+      </a>
+
+      <a href="/expenses" class="vault-card">
+        <h3> Expense Tracker</h3>
+        <p>Track spending and control finances</p>
+      </a>
+
+      <a href="/notes" class="vault-card">
+        <h3> Secure Notes</h3>
+        <p>Encrypted personal notes</p>
+      </a>
+    </div>
+  </div>
+
+  <!-- OVERLAY -->
+  <div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+  <!-- SIDEBAR -->
+  <div id="sidebar" class="sidebar">
+    <h3>Settings</h3>
+    <a href="/profile/edit" class="settings-btn white-btn">Edit Username</a>
+
+     <a href="/logout" class="settings-btn white-btn">Logout</a>
+
+    <form action="/account/delete" method="POST">
+      <button class="danger">Delete Account</button>
+    </form>
+  </div>
+
+  <div class="dashboard-footer">
+  <p class="dashboard-note">
+    Need help with your vault or account? We’re here to assist you.
+  </p>
+
+  <div class="dashboard-contact">
+    <p>
+      Contact Email:
+      <span>evaulto1410@gmail.com</span>
+    </p>
+    <p>
+      Contact Number:
+      <span>9930598420</span>
+    </p>
+    <p class="support-hours">
+      Support Hours:
+      <span>12:00 AM – 8:00 PM</span>
+    </p>
+  </div>
+</div>
+
+  <!-- SCRIPT -->
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+
+    function openSidebar() {
+      sidebar.classList.add("active");
+      overlay.classList.add("active");
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove("active");
+      overlay.classList.remove("active");
+    }
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") closeSidebar();
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | E-Vaulto</title>
+
+  <style>
+    :root {
+      --bg-dark: #0b0f0c;
+      --bg-card: #121816;
+      --text-main: #e6e6e6;
+      --text-muted: #9aa5a0;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.25);
+      --border: #1f2a25;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #16201b, #050706);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-main);
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.6);
+      animation: slideUp 1s ease forwards;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(40px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .logo span {
+      color: var(--accent);
+      text-shadow: 0 0 15px var(--accent-soft);
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 25px;
+    }
+
+    .error {
+      background: rgba(255, 0, 0, 0.15);
+      border: 1px solid red;
+      color: #ffb3b3;
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
+      margin-bottom: 15px;
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      50% { transform: translateX(4px); }
+      75% { transform: translateX(-4px); }
+      100% { transform: translateX(0); }
+    }
+
+    form input {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      background: #0b0f0c;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      transition: all 0.25s ease;
+    }
+
+    form input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-soft);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #04110a;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px var(--accent-soft);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px var(--accent);
+    }
+
+    .links {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    .links a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <div class="logo">E-<span>Vaulto</span></div>
+    <p class="subtitle">Access your secure vault</p>
+
+    <% if (error) { %>
+      <div class="error"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="/login">
+      <input
+        type="text"
+        name="identifier"
+        placeholder="Username or Email"
+        required
+      />
+
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        required
+      />
+
+      <button class="btn" type="submit">Login</button>
+    </form>
+
+    <div class="links">
+      <p><a href="/forgot-password">Forgot Password?</a></p>
+      <p>Don’t have an account? <a href="/signup">Sign up</a></p>
+    </div>
+  </div>
+
+</body>
+</html>

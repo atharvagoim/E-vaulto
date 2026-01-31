@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Vaulto | Secure Your Data</title>
+
+  <style>
+    :root {
+      --bg-dark: #0b0f0c;
+      --bg-card: #121816;
+      --text-main: #e6e6e6;
+      --text-muted: #9aa5a0;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.25);
+      --border: #1f2a25;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #16201b, #050706);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: var(--text-main);
+      overflow-x: hidden;
+      animation: pageFade 1.2s ease forwards;
+    }
+
+    /* PAGE FADE */
+    @keyframes pageFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 680px;
+      margin: auto;
+      padding: 70px 30px;
+      text-align: center;
+    }
+
+    /* LOGO */
+    .logo {
+      font-size: 4rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      margin-bottom: 15px;
+      animation: glowPulse 2.5s infinite alternate;
+    }
+
+    .logo span {
+      color: var(--accent);
+      text-shadow: 0 0 18px var(--accent-soft);
+    }
+
+    @keyframes glowPulse {
+      from {
+        text-shadow: 0 0 10px var(--accent-soft);
+      }
+      to {
+        text-shadow: 0 0 30px var(--accent);
+      }
+    }
+
+    /* TEXT */
+    .tagline {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      animation: fadeUp 1s ease forwards;
+      animation-delay: 0.3s;
+      opacity: 0;
+    }
+
+    .subline {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 50px;
+      animation: fadeUp 1s ease forwards;
+      animation-delay: 0.6s;
+      opacity: 0;
+    }
+
+    @keyframes fadeUp {
+      from {
+        transform: translateY(25px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* BUTTONS */
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+      animation: fadeUp 1s ease forwards;
+      animation-delay: 0.9s;
+      opacity: 0;
+    }
+
+    .btn {
+      text-decoration: none;
+      padding: 15px 38px;
+      border-radius: 12px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: left 0.6s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #04110a;
+      box-shadow: 0 0 20px var(--accent-soft);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 0 35px var(--accent);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent);
+      color: #04110a;
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 0 30px var(--accent);
+    }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 20px 45px;
+      text-align: center;
+      background: #060907;
+      animation: slideUp 1s ease forwards;
+      animation-delay: 1.2s;
+      opacity: 0;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(40px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .footer small {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    .about-title {
+      color: var(--accent);
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .about-text {
+      max-width: 720px;
+      margin: 0 auto;
+      font-size: 0.85rem;
+      color: #aeb8b2;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="logo">E-<span>Vaulto</span></div>
+
+    <p class="tagline">Secure your data. Own your privacy.</p>
+    <p class="subline">
+      Passwords • Game IDs • Expenses • Notes
+    </p>
+
+    <div class="buttons">
+      <a href="/signup" class="btn btn-primary">Sign Up</a>
+      <a href="/login" class="btn btn-secondary">Login</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <small>© <%= new Date().getFullYear() %> E-Vaulto. All rights reserved.</small>
+    <p class="about-title">About E-Vaulto</p>
+    <p class="about-text">
+      E-Vaulto is your personal digital vault — built to securely manage passwords,
+      game IDs, notes, and Track expenses with simplicity, encryption, and complete control.
+    </p>
+  </footer>
+
+</body>
+</html>

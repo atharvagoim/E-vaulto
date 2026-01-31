@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Delete Account</title>
+
+  <style>
+  /* =========================
+     RESET + BASE
+  ========================= */
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Inter, Segoe UI, sans-serif;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(255,140,0,.12), transparent 40%),
+      linear-gradient(180deg, #050505, #020202);
+    color: #eaeaea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* =========================
+     PAGE CARD
+  ========================= */
+  .page {
+    width: 100%;
+    max-width: 420px;
+    padding: 30px;
+    border-radius: 22px;
+    background: linear-gradient(
+      145deg,
+      rgba(20,20,20,.96),
+      rgba(8,8,8,.96)
+    );
+    border: 1px solid rgba(255,255,255,.06);
+    box-shadow:
+      0 25px 60px rgba(0,0,0,.85),
+      inset 0 1px 0 rgba(255,255,255,.04);
+    animation: pageIn .8s cubic-bezier(.22,1,.36,1);
+  }
+
+  @keyframes pageIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px) scale(.96);
+      filter: blur(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  /* =========================
+     HEADINGS
+  ========================= */
+  h2 {
+    margin: 0 0 10px;
+    font-size: 26px;
+    font-weight: 700;
+    color: #ff8c00;
+  }
+
+  p {
+    margin: 0 0 22px;
+    font-size: 14px;
+    color: #aaa;
+    line-height: 1.6;
+  }
+
+  /* =========================
+     INPUT
+  ========================= */
+  input[type="password"] {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: #090909;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: border .25s ease, box-shadow .25s ease;
+  }
+
+  input::placeholder {
+    color: #777;
+  }
+
+  input:focus {
+    border-color: #ff8c00;
+    box-shadow: 0 0 0 3px rgba(255,140,0,.18);
+  }
+
+  /* =========================
+     BUTTON
+  ========================= */
+  button {
+    width: 100%;
+    padding: 15px;
+    border-radius: 16px;
+    border: none;
+    background: #ff8c00;
+    color: #000;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(255,140,0,.25);
+    transition: transform .2s ease, box-shadow .25s ease;
+  }
+
+  button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(255,140,0,.35);
+  }
+
+  /* =========================
+     ERROR MESSAGE
+  ========================= */
+  .error {
+    margin-top: 12px;
+    color: #ff5c5c;
+    font-size: 13px;
+    animation: shake .4s ease;
+  }
+
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(0); }
+  }
+
+  /* =========================
+     FORGOT PASSWORD LINK
+  ========================= */
+  a {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 13px;
+    color: #ffb15c;
+    text-decoration: none;
+    transition: color .2s ease;
+  }
+
+  a:hover {
+    color: #ff8c00;
+    text-decoration: underline;
+  }
+
+  /* =========================
+   BACK BUTTON
+========================= */
+.back-btn {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 14px;
+  border-radius: 14px;
+
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+
+  color: #ffb15c;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px);
+
+  transition: all .25s ease;
+  z-index: 10;
+}
+
+.back-btn:hover {
+  color: #ff8c00;
+  background: rgba(255,140,0,0.12);
+  transform: translateX(-4px);
+  box-shadow: 0 6px 18px rgba(255,140,0,.25);
+}
+
+
+  </style>
+</head>
+
+<body>
+
+  <a href="/dashboard" class="back-btn">
+  ← Back
+</a>
+
+
+  <div class="page">
+    <h2>Delete Account</h2>
+
+    <p>
+      This action is permanent.  
+      Please confirm your password.
+    </p>
+
+    <form method="POST" action="/account/delete">
+      <input
+        type="password"
+        name="password"
+        placeholder="Enter your password"
+        required
+      >
+
+      <button type="submit">Delete My Account</button>
+    </form>
+
+    <% if (error) { %>
+      <div class="error"><%= error %></div>
+    <% } %>
+
+    <a href="/forgot-password">Forgot Password?</a>
+  </div>
+
+</body>
+</html>

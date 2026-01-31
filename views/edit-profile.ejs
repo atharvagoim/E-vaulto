@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile | E-Vaulto</title>
+
+  <style>
+    :root {
+      --bg-dark: #0b0f0c;
+      --bg-card: #121816;
+      --text-main: #e6e6e6;
+      --text-muted: #9aa5a0;
+      --accent: #22c55e; /* 🟢 green */
+      --accent-soft: rgba(34, 197, 94, 0.25);
+      --border: #1f2a25;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #16201b, #050706);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-main);
+      animation: fadeIn 0.9s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 0 35px rgba(0,0,0,0.7);
+      animation: slideUp 0.9s ease forwards;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(40px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 2.3rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .logo span {
+      color: var(--accent);
+      text-shadow: 0 0 14px var(--accent-soft);
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 26px;
+    }
+
+    label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      background: #0b0f0c;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      transition: all 0.25s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 14px var(--accent-soft);
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+      background: var(--accent);
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #04110a;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 22px var(--accent-soft);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px var(--accent);
+    }
+
+    .back {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    .back a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .back a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <div class="logo">E-<span>Vaulto</span></div>
+    <p class="subtitle">Update your username</p>
+
+    <form method="POST" action="/profile/edit">
+      <label for="username">Username</label>
+
+      <input
+        id="username"
+        type="text"
+        name="username"
+        value="<%= user.username %>"
+        required
+      />
+
+      <button class="btn" type="submit">Save Changes</button>
+    </form>
+
+    <div class="back">
+      <a href="/dashboard">← Back to dashboard</a>
+    </div>
+  </div>
+
+</body>
+</html>
+
