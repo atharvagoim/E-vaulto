@@ -426,9 +426,209 @@ app.post("/games/delete/:id", requireLogin, async (req, res) => {
 });
 
 
+// =======================
+// EXPENSES (E-VAULTO)
+// =======================
+ 
+app.get("/expenses", requireLogin, async (req, res) => {
+  try {
+    const userId = req.session.user.id;
 
-app.get("/expenses", requireLogin, (req, res) => res.send("💸 Expenses"));
-app.get("/notes", requireLogin, (req, res) => res.send("📝 Secure Notes"));
+    /* Expense List */
+    const [expenses] = await pool.query(
+      `
+      SELECT * FROM ev_expenses
+      WHERE user_id = ?
+      ORDER BY expense_date DESC
+      `,
+      [userId]
+    );
+
+    /* Monthly Spending (Money vs Months) — excludes savings */
+    const [monthlyData] = await pool.query(
+      `
+      SELECT 
+        MONTH(expense_date) AS month,
+        SUM(amount) AS total
+      FROM ev_expenses
+      WHERE user_id = ?
+        AND YEAR(expense_date) = YEAR(CURDATE())
+        AND category NOT IN ('Savings', 'Saving')
+      GROUP BY MONTH(expense_date)
+      ORDER BY MONTH(expense_date)
+      `,
+      [userId]
+    );
+
+    /* Pie Chart Data — excludes savings */
+    const [pieData] = await pool.query(
+      `
+      SELECT category, SUM(amount) AS total
+      FROM ev_expenses
+      WHERE user_id = ?
+        AND category NOT IN ('Savings', 'Saving')
+      GROUP BY category
+      `,
+      [userId]
+    );
+
+    /* Savings Box */
+    const [[savingsBox]] = await pool.query(
+      `
+      SELECT IFNULL(SUM(amount), 0) AS total
+      FROM ev_expenses
+      WHERE user_id = ?
+        AND category IN ('Savings', 'Saving')
+      `,
+      [userId]
+    );
+
+    res.render("ev-expenses", {
+      expenses,
+      monthlyData,
+      pieData,
+      savingsTotal: savingsBox.total
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.redirect("/dashboard");
+  }
+});
+
+/* ➕ Add Expense (auto-detects today) */
+app.post("/expenses/add", requireLogin, async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+    const { title, amount, category } = req.body;
+
+    await pool.query(
+      `
+      INSERT INTO ev_expenses
+      (user_id, title, amount, category, expense_date)
+      VALUES (?, ?, ?, ?, CURDATE())
+      `,
+      [userId, title, amount, category]
+    );
+
+    res.redirect("/expenses");
+  } catch (err) {
+    console.error(err);
+    res.redirect("/expenses");
+  }
+});
+
+/* ❌ Delete Expense */
+app.post("/expenses/delete/:id", requireLogin, async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+    const expenseId = req.params.id;
+
+    await pool.query(
+      `
+      DELETE FROM ev_expenses
+      WHERE id = ? AND user_id = ?
+      `,
+      [expenseId, userId]
+    );
+
+    res.redirect("/expenses");
+  } catch (err) {
+    console.error(err);
+    res.redirect("/expenses");
+  }
+});
+
+
+// =======================
+// NOTES (E-VAULTO)
+// =======================
+
+// View notes
+app.get("/notes", requireLogin, async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+
+    const [notes] = await pool.query(
+      `
+      SELECT * FROM ev_notes
+      WHERE user_id = ?
+      ORDER BY created_at DESC
+      `,
+      [userId]
+    );
+
+    res.render("ev-notes", { notes });
+  } catch (err) {
+    console.error(err);
+    res.redirect("/dashboard");
+  }
+});
+
+// Add note
+app.post("/notes/add", requireLogin, async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+    const { title, content } = req.body;
+
+    await pool.query(
+      `
+      INSERT INTO ev_notes (user_id, title, content)
+      VALUES (?, ?, ?)
+      `,
+      [userId, title, content]
+    );
+
+    res.redirect("/notes");
+  } catch (err) {
+    console.error(err);
+    res.redirect("/notes");
+  }
+});
+
+// Delete note
+app.post("/notes/delete/:id", requireLogin, async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+    const noteId = req.params.id;
+
+    await pool.query(
+      `
+      DELETE FROM ev_notes
+      WHERE id = ? AND user_id = ?
+      `,
+      [noteId, userId]
+    );
+
+    res.redirect("/notes");
+  } catch (err) {
+    console.error(err);
+    res.redirect("/notes");
+  }
+});
+
+// Update note
+app.post("/notes/edit/:id", requireLogin, async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+    const noteId = req.params.id;
+    const { title, content } = req.body;
+
+    await pool.query(
+      `
+      UPDATE ev_notes
+      SET title = ?, content = ?
+      WHERE id = ? AND user_id = ?
+      `,
+      [title, content, noteId, userId]
+    );
+
+    res.redirect("/notes");
+  } catch (err) {
+    console.error(err);
+    res.redirect("/notes");
+  }
+});
 
 /* =======================
    START SERVER
